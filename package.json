@@ -1,0 +1,31 @@
+{
+  "name": "akamai-cli-security",
+  "version": "0.1.0",
+  "description": "A wrapping development kit to interface common tasks with akamai's {OPEN} API.",
+  "repository": "https://github.com/karlredgate/cli-security",
+  "license": "Apache-2.0",
+  "engines" : { 
+	"node" : ">=6.2.2" 
+  }, 
+  "scripts": {
+    "start": "node bin/akamaiSecurity",
+    "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "main": "./index.js",
+  "files": [
+    "index.js",
+    "src"
+  ],
+  "dependencies": {
+    "edgegrid": "*",
+    "commander": "*",
+    "md5": "^2.2.1",
+    "mocha": "^3.2.0",
+    "request": "^2.74.0",
+    "untildify": "*"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "through2": "^2.0.1"
+  }
+}

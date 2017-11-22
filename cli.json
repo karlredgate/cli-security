@@ -1,0 +1,12 @@
+{
+  "requirements": {
+    "node": "6.2.2"
+  },
+  "commands": [
+    {
+      "name": "security",
+      "version": "0.1.0",
+      "description": "Manage configurations for Akamai security"
+    }
+  ]
+}
