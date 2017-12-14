@@ -18,8 +18,16 @@
 
 var commands = {};
 
-commands["protect"] = function () {
-    console.log( "protect" );
+commands["configs"] = function () {
+    console.log( "list waf configurations" );
+};
+
+commands["activate"] = function () {
+    console.log( "activating waf configuration" );
+};
+
+commands["match-target"] = function () {
+    console.log( "adding waf match-target" );
 };
 
 console.log( process.argv );
