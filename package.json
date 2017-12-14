@@ -2,13 +2,13 @@
   "name": "akamai-cli-security",
   "version": "0.1.0",
   "description": "A wrapping development kit to interface common tasks with akamai's {OPEN} API.",
-  "repository": "https://github.com/karlredgate/cli-security",
+  "repository": "https://github.com/karlredgate/cli-waf",
   "license": "Apache-2.0",
   "engines" : { 
 	"node" : ">=6.2.2" 
   }, 
   "scripts": {
-    "start": "node bin/akamaiSecurity",
+    "start": "node bin/akamaiWaf",
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "main": "./index.js",
