@@ -39,4 +39,4 @@ if ( typeof command === 'undefined' ) {
     process.exit( -1 );
 }
 
-command( process.argv );
+// command( process.argv );
