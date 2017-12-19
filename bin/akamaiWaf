@@ -16,27 +16,76 @@
 
 "use strict";
 
+function die( message ) {
+    console.log( message );
+    process.exit( 1 );
+}
+
+const node_exec = process.argv.shift();
+const script    = process.argv.shift();
+
+var settings = {
+    verbose: false
+};
+
+var options = {};
+
+options["-v"] = options["--verbose"] = function () {
+    this.verbose = true;
+}
+
+options["--config"] = function (id) {
+    if ( id === undefined ) die("--config requires an argument");
+    this.config = id;
+}
+
+options["--version"] = function (id) {
+    if ( id === undefined ) die("--version requires an argument");
+    this.version = id;
+}
+
+function get_options( arg ) {
+    if ( ! arg.match(/^-.*/) ) return true;
+
+    var [key,value] = arg.split("=");
+    var handler = options[ key ];
+    if ( typeof handler === 'undefined' ) {
+        console.log( "unknown option: " + arg );
+        process.exit( -1 );
+    }
+
+    handler.call( settings, value );
+    return false;
+}
+
 var commands = {};
 
 commands["configs"] = function () {
     console.log( "list waf configurations" );
 };
 
-commands["activate"] = function () {
-    console.log( "activating waf configuration" );
+commands["activate"] = function ( args ) {
+    if ( this.config === undefined ) {
+        die("no config specified for activation");
+    }
+    if ( this.verbose ) {
+        console.log( "activating waf configuration: " + this.config);
+    }
 };
 
 commands["match-target"] = function () {
     console.log( "adding waf match-target" );
 };
 
-console.log( process.argv );
+process.argv = process.argv.filter( get_options );
 
-var command = commands[ process.argv[2] ];
+var command_name = process.argv.shift();
+var command      = commands[ command_name ];
 
 if ( typeof command === 'undefined' ) {
-    console.log( "Help" );
-    process.exit( -1 );
+    die( "Unknown command: " + command_name );
 }
 
-// command( process.argv );
+command.apply( settings, process.argv );
+
+// vim:autoindent expandtab sw=4
