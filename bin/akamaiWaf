@@ -77,6 +77,13 @@ commands["match-target"] = function () {
     console.log( "adding waf match-target" );
 };
 
+commands["help"] = function () {
+    for ( var command in commands ) {
+        if ( command === "help" ) continue;
+        console.log( command );
+    }
+};
+
 process.argv = process.argv.filter( get_options );
 
 var command_name = process.argv.shift();
@@ -84,6 +91,7 @@ var command      = commands[ command_name ];
 
 if ( typeof command === 'undefined' ) {
     die( "Unknown command: " + command_name );
+    command = commands.help;
 }
 
 command.apply( settings, process.argv );

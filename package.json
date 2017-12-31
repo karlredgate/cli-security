@@ -1,5 +1,5 @@
 {
-  "name": "akamai-cli-security",
+  "name": "akamai-cli-waf",
   "version": "0.1.0",
   "description": "A wrapping development kit to interface common tasks with akamai's {OPEN} API.",
   "repository": "https://github.com/karlredgate/cli-waf",
@@ -17,15 +17,8 @@
     "src"
   ],
   "dependencies": {
-    "edgegrid": "*",
-    "commander": "*",
-    "md5": "^2.2.1",
-    "mocha": "^3.2.0",
-    "request": "^2.74.0",
-    "untildify": "*"
+    "edgegrid": "*"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "through2": "^2.0.1"
   }
 }

@@ -7,6 +7,11 @@
       "name": "waf",
       "version": "0.1.0",
       "description": "Manage configurations for Akamai security"
+    },
+    {
+      "name": "reputation",
+      "version": "0.1.0",
+      "description": "Manage client reputation configuration"
     }
   ]
 }
