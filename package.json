@@ -17,7 +17,7 @@
     "src"
   ],
   "dependencies": {
-    "edgegrid": "*"
+    "noi": "karlredgate/noi"
   },
   "devDependencies": {
   }
