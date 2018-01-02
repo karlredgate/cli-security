@@ -34,16 +34,32 @@ function info( obj ) {
     obj.eventDefinitions.map( definition_info );
 }
 
-function per_event_type( dto ) {
+function info( dto ) {
+    console.log( JSON.stringify(dto) );
+}
+
+function per_list( dto ) {
+    console.log( JSON.stringify(dto) );
+    return;
+
     if ( dto.length === 0 ) {
         console.log( "empty event type list" );
     }
     dto.map( info );
 }
 
+function delete_response() {
+}
+
 var commands = {
-    types: function () {
-        NetworkList.types( per_event_type );
+    list: function () {
+        NetworkList.list( per_list );
+    },
+    fetch: function (id) {
+        NetworkList.fetch( id, info );
+    },
+    "delete-element": function (id, element) {
+        NetworkList.delete_element( id, element, delete_response );
     }
 };
 
