@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Copyright 2017 Akamai Technologies, Inc. All Rights Reserved
+// Copyright 2017 Karl Redgate, All Rights Reserved
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,86 +14,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use strict";
+const Tool = require('tool');
+const Noi = require('noi');
+const { NetworkList } = Noi;
 
-function die( message ) {
-    console.log( message );
-    process.exit( 1 );
+const sep = "\t";
+
+function definition_info( obj ) {
+    var id = obj.eventDefinitionId;
+    var name = '"' + obj.eventName + '"';
+    var desc = '"' + obj.eventDescription + '"';
+    console.log( [id,name,desc].join(sep) );
 }
 
-const node_exec = process.argv.shift();
-const script    = process.argv.shift();
-
-var settings = {
-    verbose: false
-};
-
-var options = {};
-
-options["-v"] = options["--verbose"] = function () {
-    this.verbose = true;
+function info( obj ) {
+    var id = obj.eventTypeId;
+    var name = obj.eventTypeName;
+    console.log( "Type: " + name + " (" + id + ")" );
+    obj.eventDefinitions.map( definition_info );
 }
 
-options["--config"] = function (id) {
-    if ( id === undefined ) die("--config requires an argument");
-    this.config = id;
-}
-
-options["--version"] = function (id) {
-    if ( id === undefined ) die("--version requires an argument");
-    this.version = id;
-}
-
-function get_options( arg ) {
-    if ( ! arg.match(/^-.*/) ) return true;
-
-    var [key,value] = arg.split("=");
-    var handler = options[ key ];
-    if ( typeof handler === 'undefined' ) {
-        console.log( "unknown option: " + arg );
-        process.exit( -1 );
+function per_event_type( dto ) {
+    if ( dto.length === 0 ) {
+        console.log( "empty event type list" );
     }
-
-    handler.call( settings, value );
-    return false;
+    dto.map( info );
 }
 
-var commands = {};
-
-commands["configs"] = function () {
-    console.log( "list waf configurations" );
-};
-
-commands["activate"] = function ( args ) {
-    if ( this.config === undefined ) {
-        die("no config specified for activation");
-    }
-    if ( this.verbose ) {
-        console.log( "activating waf configuration: " + this.config);
+var commands = {
+    types: function () {
+        NetworkList.types( per_event_type );
     }
 };
 
-commands["match-target"] = function () {
-    console.log( "adding waf match-target" );
-};
+var tool = new Tool( commands );
 
-commands["help"] = function () {
-    for ( var command in commands ) {
-        if ( command === "help" ) continue;
-        console.log( command );
-    }
-};
+tool.evaluate( process.argv );
 
-process.argv = process.argv.filter( get_options );
-
-var command_name = process.argv.shift();
-var command      = commands[ command_name ];
-
-if ( typeof command === 'undefined' ) {
-    die( "Unknown command: " + command_name );
-    command = commands.help;
-}
-
-command.apply( settings, process.argv );
-
-// vim:autoindent expandtab sw=4
+/* vim: set autoindent expandtab sw=4 syntax=javascript: */

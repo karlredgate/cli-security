@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Copyright 2017 Akamai Technologies, Inc. All Rights Reserved
+// Copyright 2017 Karl Redgate, All Rights Reserved
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -96,4 +96,4 @@ if ( typeof command === 'undefined' ) {
 
 command.apply( settings, process.argv );
 
-// vim:autoindent expandtab sw=4
+/* vim: set autoindent expandtab sw=4 syntax=javascript: */
