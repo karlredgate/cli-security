@@ -9,6 +9,11 @@
       "description": "Manage configurations for Akamai security"
     },
     {
+      "name": "network-list",
+      "version": "0.1.0",
+      "description": "Manage network list configurations"
+    },
+    {
       "name": "reputation",
       "version": "0.1.0",
       "description": "Manage client reputation configuration"
