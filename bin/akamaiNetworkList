@@ -79,6 +79,9 @@ var commands = {
     fetch: function (id) {
         NetworkList.fetch( id, detailed_info );
     },
+    create: function (name, type, ip_list) {
+        NetworkList.create( name, type, ip_list.split(",") );
+    },
     "delete-element": function (id, element) {
         NetworkList.delete_element( id, element, delete_response );
     }
