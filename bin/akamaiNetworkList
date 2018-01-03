@@ -69,6 +69,10 @@ function per_list( dto ) {
     list.map( info );
 }
 
+function print_response( dto ) {
+    console.log( JSON.stringify(dto) );
+}
+
 function delete_response() {
 }
 
@@ -80,7 +84,7 @@ var commands = {
         NetworkList.fetch( id, detailed_info );
     },
     create: function (name, type, ip_list) {
-        NetworkList.create( name, type, ip_list.split(",") );
+        NetworkList.create( name, type, ip_list.split(","), print_response );
     },
     "delete-element": function (id, element) {
         NetworkList.delete_element( id, element, delete_response );
