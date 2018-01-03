@@ -54,10 +54,15 @@ function info( obj ) {
     var entries = obj.numEntries;
     var entry_s = right_fill( "("+entries+" entries)", 16 );
     console.log( id + type + entry_s + "  " + name );
+    console.log( repeat(' ',52) + account );
+}
+
+function spaceship( a, b ) {
+    return (a > b) - (a < b);
 }
 
 function per_list( dto ) {
-    var list = dto.network_lists;
+    var list = dto.network_lists.sort( (a,b) => spaceship(a.account, b.account) );
     if ( list.length === 0 ) {
         console.log( "no network lists" );
     }
