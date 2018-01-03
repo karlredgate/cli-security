@@ -73,6 +73,10 @@ function print_response( dto ) {
     console.log( JSON.stringify(dto) );
 }
 
+function print_activation_status( dto ) {
+    console.log(  );
+}
+
 function delete_response() {
 }
 
@@ -103,8 +107,17 @@ var commands = {
         NetworkList.activate( params, print_response );
     },
     "activation-status": function (name, env) {
-        die_unless_valid_env( env );
-        NetworkList.activation_status( name, env, print_response );
+        if ( Noi.is_valid_env(env) ) {
+            NetworkList.activation_status( name, env, print_response );
+            process.exit( 0 );
+        }
+        // if env not specified - do both
+        NetworkList.activation_status( name, 'staging', 
+            (dto) => console.log("Staging:    " + dto["activation-status"])
+        );
+        NetworkList.activation_status( name, 'production', 
+            (dto) => console.log("Production: " + dto["activation-status"])
+        );
     },
     "delete-element": function (id, element) {
         NetworkList.delete_element( id, element, delete_response );
