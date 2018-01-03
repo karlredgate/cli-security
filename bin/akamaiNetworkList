@@ -20,32 +20,43 @@ const { NetworkList } = Noi;
 
 const sep = "\t";
 
-function definition_info( obj ) {
-    var id = obj.eventDefinitionId;
-    var name = '"' + obj.eventName + '"';
-    var desc = '"' + obj.eventDescription + '"';
-    console.log( [id,name,desc].join(sep) );
+function repeat(pattern, count) {
+    if ( count < 1 ) return '';
+    var result = '';
+    while (count > 1) {
+        if (count & 1) result += pattern;
+        count >>= 1;
+        pattern += pattern;
+    }
+    return result + pattern;
+}
+
+function left_fill( s, size ) {
+    var count = size - s.length;
+    return s + repeat(' ', count);
+}
+
+function right_fill( s, size ) {
+    var count = size - s.length;
+    return repeat(' ', count) + s;
 }
 
 function info( obj ) {
-    var id = obj.eventTypeId;
-    var name = obj.eventTypeName;
-    console.log( "Type: " + name + " (" + id + ")" );
-    obj.eventDefinitions.map( definition_info );
-}
-
-function info( dto ) {
-    console.log( JSON.stringify(dto) );
+    var name = obj.name;
+    var type = left_fill( obj.type, 4 );
+    var id   = left_fill( obj["unique-id"], 30 );
+    var account = obj.account;
+    var entries = obj.numEntries;
+    var entry_s = right_fill( "("+entries+" entries)", 16 );
+    console.log( id + type + entry_s + "  " + name );
 }
 
 function per_list( dto ) {
-    console.log( JSON.stringify(dto) );
-    return;
-
-    if ( dto.length === 0 ) {
-        console.log( "empty event type list" );
+    var list = dto.network_lists;
+    if ( list.length === 0 ) {
+        console.log( "no network lists" );
     }
-    dto.map( info );
+    list.map( info );
 }
 
 function delete_response() {
