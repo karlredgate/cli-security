@@ -17,6 +17,7 @@
     "src"
   ],
   "dependencies": {
+    "tool": "karlredgate/node-tool",
     "noi": "karlredgate/noi"
   },
   "devDependencies": {
