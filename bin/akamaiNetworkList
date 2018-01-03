@@ -86,6 +86,21 @@ var commands = {
     create: function (name, type, ip_list) {
         NetworkList.create( name, type, ip_list.split(","), print_response );
     },
+    activate: function (name, env) {
+        env = env || 'staging';
+        if ( Noi.is_invalid_env(env) ) {
+            console.error( "Invalid environment" );
+            process.exit( 1 );
+        }
+        var params = {
+            name: name,
+            env: env
+        };
+        NetworkList.activate( params, print_response );
+    },
+    "activation-status": function (name, env) {
+        NetworkList.activate( name, env, print_response );
+    },
     "delete-element": function (id, element) {
         NetworkList.delete_element( id, element, delete_response );
     }
