@@ -41,6 +41,11 @@ function right_fill( s, size ) {
     return repeat(' ', count) + s;
 }
 
+function detailed_info( obj ) {
+    // console.log( JSON.stringify(obj) );
+    obj.list.map( (e) => console.log(e) );
+}
+
 function info( obj ) {
     var name = obj.name;
     var type = left_fill( obj.type, 4 );
@@ -67,7 +72,7 @@ var commands = {
         NetworkList.list( per_list );
     },
     fetch: function (id) {
-        NetworkList.fetch( id, info );
+        NetworkList.fetch( id, detailed_info );
     },
     "delete-element": function (id, element) {
         NetworkList.delete_element( id, element, delete_response );
