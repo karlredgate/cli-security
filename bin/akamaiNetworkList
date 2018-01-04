@@ -88,7 +88,9 @@ function die_unless_valid_env( env ) {
 }
 
 var commands = {
+    // List should be just the list of names unless --verbose is used
     list: function () {
+        if ( this.verbose ) console.log("be verbose");
         NetworkList.list( per_list );
     },
     fetch: function (id) {
