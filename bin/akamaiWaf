@@ -14,86 +14,125 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use strict";
+const Tool = require('tool');
+const Noi = require('noi');
+const { WAF } = Noi;
 
-function die( message ) {
-    console.log( message );
-    process.exit( 1 );
-}
+const sep = "\t";
 
-const node_exec = process.argv.shift();
-const script    = process.argv.shift();
-
-var settings = {
-    verbose: false
-};
-
-var options = {};
-
-options["-v"] = options["--verbose"] = function () {
-    this.verbose = true;
-}
-
-options["--config"] = function (id) {
-    if ( id === undefined ) die("--config requires an argument");
-    this.config = id;
-}
-
-options["--version"] = function (id) {
-    if ( id === undefined ) die("--version requires an argument");
-    this.version = id;
-}
-
-function get_options( arg ) {
-    if ( ! arg.match(/^-.*/) ) return true;
-
-    var [key,value] = arg.split("=");
-    var handler = options[ key ];
-    if ( typeof handler === 'undefined' ) {
-        console.log( "unknown option: " + arg );
-        process.exit( -1 );
+function repeat(pattern, count) {
+    if ( count < 1 ) return '';
+    var result = '';
+    while (count > 1) {
+        if (count & 1) result += pattern;
+        count >>= 1;
+        pattern += pattern;
     }
-
-    handler.call( settings, value );
-    return false;
+    return result + pattern;
 }
 
-var commands = {};
-
-commands["configs"] = function () {
-    console.log( "list waf configurations" );
-};
-
-commands["activate"] = function ( args ) {
-    if ( this.config === undefined ) {
-        die("no config specified for activation");
-    }
-    if ( this.verbose ) {
-        console.log( "activating waf configuration: " + this.config);
-    }
-};
-
-commands["match-target"] = function () {
-    console.log( "adding waf match-target" );
-};
-
-commands["help"] = function () {
-    for ( var command in commands ) {
-        if ( command === "help" ) continue;
-        console.log( command );
-    }
-};
-
-process.argv = process.argv.filter( get_options );
-
-var command_name = process.argv.shift();
-var command      = commands[ command_name ];
-
-if ( typeof command === 'undefined' ) {
-    die( "Unknown command: " + command_name );
-    command = commands.help;
+function left_fill( s, size ) {
+    var count = size - s.length;
+    return s + repeat(' ', count);
 }
 
-command.apply( settings, process.argv );
+function right_fill( s, size ) {
+    var count = size - s.length;
+    return repeat(' ', count) + s;
+}
+
+function detailed_info( obj ) {
+    // console.log( JSON.stringify(obj) );
+    obj.list.map( (e) => console.log(e) );
+}
+
+function info( obj ) {
+    var name = obj.name;
+    var type = left_fill( obj.type, 4 );
+    var id   = left_fill( obj["unique-id"], 30 );
+    var account = obj.account;
+    var entries = obj.numEntries;
+    var entry_s = right_fill( "("+entries+" entries)", 16 );
+    console.log( id + type + entry_s + "  " + name );
+    console.log( repeat(' ',52) + account );
+}
+
+function spaceship( a, b ) {
+    return (a > b) - (a < b);
+}
+
+/*
+ */
+function per_config( dto ) {
+    var list = dto.network_lists.sort( (a,b) => spaceship(a.account, b.account) );
+    if ( list.length === 0 ) {
+        console.log( "no network lists" );
+    }
+    list.map( info );
+}
+
+function print_response( dto ) {
+    console.log( JSON.stringify(dto) );
+}
+
+function print_activation_status( dto ) {
+    console.log(  );
+}
+
+function delete_response() {
+}
+
+function die_unless_valid_env( env ) {
+    if ( Noi.is_invalid_env(env) ) {
+        console.error( "Invalid environment" );
+        process.exit( 1 );
+    }
+}
+
+var commands = {
+    // List should be just the list of names unless --verbose is used
+    configs: function () {
+        if ( this.verbose ) console.log("be verbose");
+        WAF.configs( per_config );
+    },
+    config: function (id) {
+        WAF.config( id, detailed_info );
+    },
+    activate: function (name, env) {
+        env = env || 'staging';
+        die_unless_valid_env( env );
+        var params = {
+            name: name,
+            env: env
+        };
+        WAF.activate( params, print_response );
+    },
+    "activation-status": function (name, env) {
+        if ( Noi.is_valid_env(env) ) {
+            WAF.activation_status( name, env, print_response );
+            process.exit( 0 );
+        }
+        // if env not specified - do both
+        WAF.activation_status( name, 'staging', 
+            (dto) => console.log("Staging:    " + dto["activation-status"])
+        );
+        WAF.activation_status( name, 'production', 
+            (dto) => console.log("Production: " + dto["activation-status"])
+        );
+    },
+    "add-hostname": function (id, element) {
+        WAF.add_hostname( id, element, delete_response );
+    },
+    "create-match-target": function (id, element) {
+        WAF.create_match_target( id, element, delete_response );
+    },
+    "modify-match-target": function (id, element) {
+        WAF.modify_match_target( id, element, delete_response );
+    }
+};
+
+var tool = new Tool( commands );
+
+tool.evaluate( process.argv );
 
 /* vim: set autoindent expandtab sw=4 syntax=javascript: */
