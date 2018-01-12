@@ -16,7 +16,7 @@
 
 const Tool = require('tool');
 const Noi = require('noi');
-const { NetworkList } = Noi;
+const { SIEM } = Noi;
 
 const sep = "\t";
 
@@ -35,6 +35,9 @@ function info( obj ) {
 }
 
 function per_event_type( dto ) {
+    console.log( JSON.stringify(dto) );
+    process.exit( 1 );
+
     if ( dto.length === 0 ) {
         console.log( "empty event type list" );
     }
@@ -42,8 +45,8 @@ function per_event_type( dto ) {
 }
 
 var commands = {
-    types: function () {
-        NetworkList.types( per_event_type );
+    events: function ( configId ) {
+        SIEM.types( configId, per_event_type );
     }
 };
 
