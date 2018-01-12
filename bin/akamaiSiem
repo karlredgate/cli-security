@@ -46,7 +46,7 @@ function per_event_type( dto ) {
 
 var commands = {
     events: function ( configId ) {
-        SIEM.types( configId, per_event_type );
+        SIEM.events( configId, per_event_type );
     }
 };
 
