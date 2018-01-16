@@ -46,10 +46,10 @@ function dump_dto( dto ) {
 
 var commands = {
     "report-packs": function () {
-        SecMon.events( dump_dto );
+        SecMon.report_packs( dump_dto );
     },
     "report-pack": function ( id ) {
-        SecMon.events( id, dump_dto );
+        SecMon.report_pack( id, dump_dto );
     }
 };
 
