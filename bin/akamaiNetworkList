@@ -48,6 +48,11 @@ function detailed_info( obj ) {
 
 function info( obj ) {
     var name = obj.name;
+    console.log( name );
+}
+
+function verbose_info( obj ) {
+    var name = obj.name;
     var type = left_fill( obj.type, 4 );
     var id   = left_fill( obj["unique-id"], 30 );
     var account = obj.account;
