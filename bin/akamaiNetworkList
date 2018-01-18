@@ -47,8 +47,8 @@ function detailed_info( obj ) {
 }
 
 function info( obj ) {
-    var name = obj.name;
-    console.log( name );
+    var id = obj.id;
+    console.log( id );
 }
 
 function verbose_info( obj ) {
