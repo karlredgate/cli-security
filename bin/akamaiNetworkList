@@ -47,7 +47,7 @@ function detailed_info( obj ) {
 }
 
 function info( obj ) {
-    var id = obj.id;
+    var id = obj['unique-id'];
     console.log( id );
 }
 
@@ -67,11 +67,12 @@ function spaceship( a, b ) {
 }
 
 function per_list( dto ) {
+    var verbose = this.verbose;
     var list = dto.network_lists.sort( (a,b) => spaceship(a.account, b.account) );
     if ( list.length === 0 ) {
         console.log( "no network lists" );
     }
-    list.map( info );
+    list.map( verbose ? verbose_info : info );
 }
 
 function print_response( dto ) {
@@ -96,7 +97,7 @@ var commands = {
     // List should be just the list of names unless --verbose is used
     list: function () {
         if ( this.verbose ) console.log("be verbose");
-        NetworkList.list( per_list );
+        NetworkList.list( per_list.bind(this) );
     },
     fetch: function (id) {
         NetworkList.fetch( id, detailed_info );
