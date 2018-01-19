@@ -1,0 +1,145 @@
+#!/usr/bin/env node
+
+// Copyright 2017 Karl Redgate, All Rights Reserved
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+const Tool = require('tool');
+const Noi = require('noi');
+const { ApiDefinitions } = Noi;
+
+const sep = "\t";
+
+function repeat(pattern, count) {
+    if ( count < 1 ) return '';
+    var result = '';
+    while (count > 1) {
+        if (count & 1) result += pattern;
+        count >>= 1;
+        pattern += pattern;
+    }
+    return result + pattern;
+}
+
+function left_fill( s, size ) {
+    var count = size - s.length;
+    return s + repeat(' ', count);
+}
+
+function right_fill( s, size ) {
+    var count = size - s.length;
+    return repeat(' ', count) + s;
+}
+
+function detailed_info( obj ) {
+    // console.log( JSON.stringify(obj) );
+    obj.list.map( (e) => console.log(e) );
+}
+
+function info( obj ) {
+    var id = obj['unique-id'];
+    console.log( id );
+}
+
+function verbose_info( obj ) {
+    var name = obj.name;
+    var type = left_fill( obj.type, 4 );
+    var id   = left_fill( obj["unique-id"], 30 );
+    var account = obj.account;
+    var entries = obj.numEntries;
+    var entry_s = right_fill( "("+entries+" entries)", 16 );
+    console.log( id + type + entry_s + "  " + name );
+    console.log( repeat(' ',52) + account );
+}
+
+function spaceship( a, b ) {
+    return (a > b) - (a < b);
+}
+
+function per_list( dto ) {
+    var verbose = this.verbose;
+    var list = dto.network_lists.sort( (a,b) => spaceship(a.account, b.account) );
+    if ( list.length === 0 ) {
+        console.log( "no network lists" );
+    }
+    list.map( verbose ? verbose_info : info );
+}
+
+function print_response( dto ) {
+    console.log( JSON.stringify(dto) );
+}
+
+function print_activation_status( dto ) {
+    console.log(  );
+}
+
+function delete_response() {
+}
+
+function die_unless_valid_env( env ) {
+    if ( Noi.is_invalid_env(env) ) {
+        console.error( "Invalid environment" );
+        process.exit( 1 );
+    }
+}
+
+function dump_dto( dto ) {
+    console.log( JSON.stringify(dto) );
+}
+
+var commands = {
+    // List should be just the list of names unless --verbose is used
+    endpoints: function () {
+        ApiDefinitions.endpoints( dump_dto.bind(this) );
+    },
+    entitlements: function () {
+        ApiDefinitions.entitlements( dump_dto.bind(this) );
+    },
+    fetch: function (id) {
+        ApiDefinitions.fetch( id, detailed_info );
+    },
+    create: function (name, type, ip_list) {
+        ApiDefinitions.create( name, type, ip_list.split(","), print_response );
+    },
+    activate: function (name, env) {
+        env = env || 'staging';
+        die_unless_valid_env( env );
+        var params = {
+            name: name,
+            env: env
+        };
+        ApiDefinitions.activate( params, print_response );
+    },
+    "activation-status": function (name, env) {
+        if ( Noi.is_valid_env(env) ) {
+            ApiDefinitions.activation_status( name, env, print_response );
+            process.exit( 0 );
+        }
+        // if env not specified - do both
+        ApiDefinitions.activation_status( name, 'staging', 
+            (dto) => console.log("Staging:    " + dto["activation-status"])
+        );
+        ApiDefinitions.activation_status( name, 'production', 
+            (dto) => console.log("Production: " + dto["activation-status"])
+        );
+    },
+    "delete-element": function (id, element) {
+        ApiDefinitions.delete_element( id, element, delete_response );
+    }
+};
+
+var tool = new Tool( commands );
+
+tool.evaluate( process.argv );
+
+/* vim: set autoindent expandtab sw=4 syntax=javascript: */
