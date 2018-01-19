@@ -14,6 +14,11 @@
       "description": "Manage network list configurations"
     },
     {
+      "name": "custom-rules",
+      "version": "0.1.0",
+      "description": "Manage custom rule definisions for Akamai security"
+    },
+    {
       "name": "api-definitions",
       "version": "0.1.0",
       "description": "Manage API definisions for Akamai security"
