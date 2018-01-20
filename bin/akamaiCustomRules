@@ -16,7 +16,8 @@
 
 const Tool = require('tool');
 const Noi = require('noi');
-const { CustomRules } = Noi;
+const { AppSecDefinition } = Noi;
+const CustomRules = AppSecDefinition.CustomRules;
 
 const sep = "\t";
 
