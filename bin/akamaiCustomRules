@@ -49,10 +49,13 @@ function dump_dto( dto ) {
 
 var commands = {
     "custom-rules": function () {
-        CustomRules.rules( dump_dto );
+        if ( this.settings === null ) {
+            throw "missing settings - should get default here";
+        }
+        CustomRules.rules( this.config, dump_dto );
     },
     "custom-rule": function ( id ) {
-        CustomRules.ruls( id, dump_dto );
+        CustomRules.rule( this.config, id, dump_dto );
     }
 };
 
