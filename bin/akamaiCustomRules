@@ -47,9 +47,12 @@ function dump_dto( dto ) {
     dto.map( info );
 }
 
+/*
+ * commands all get the options settings as "this"
+ */
 var commands = {
     "custom-rules": function () {
-        if ( this.settings === null ) {
+        if ( this.config === null ) {
             throw "missing settings - should get default here";
         }
         CustomRules.rules( this.config, dump_dto );
