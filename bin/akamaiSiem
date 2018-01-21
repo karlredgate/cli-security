@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Tool = require('tool');
+const { AppSecTool } = require('../index');
 const Noi = require('noi');
 const { SIEM } = Noi;
 

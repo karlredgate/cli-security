@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const Tool = require('tool');
+const { AppSecTool } = require('../index');
 const Noi = require('noi');
 const { NetworkList } = Noi;
 
@@ -47,7 +47,7 @@ var commands = {
     }
 };
 
-var tool = new Tool( commands );
+var tool = new AppSecTool( commands );
 
 tool.evaluate( process.argv );
 
