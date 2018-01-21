@@ -16,14 +16,31 @@ module.exports = AppSecTool;
 
 const Tool = require('tool');
 const util = require('util');
+const Noi = require('noi');
 
 util.inherits( AppSecTool, Tool );
 
+function die( message ) {
+    console.error( message );
+    process.exit( -1 );
+}
+
 function AppSecTool( handlers ) {
-    // super constructor
-    Tool.call( this, handlers );
+    Tool.call( this, handlers ); // super constructor
     this.option( ["--config",  "-C"], null );
     this.option( ["--version", "-V"], null );
+}
+
+function config_or_error() {
+    var list = Noi.config_list();
+    if ( list.length > 1 ) die("Must specify a config");
+    return list[0];
+}
+
+AppSecTool.prototype.validate = function () {
+    if ( this.settings.config === null ) {
+        this.settings.config = config_or_error();
+    }
 }
 
 /* vim: set autoindent expandtab sw=4 syntax=javascript: */
