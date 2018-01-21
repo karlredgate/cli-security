@@ -63,6 +63,7 @@ var commands = {
 };
 
 var tool = new AppSecTool( commands );
+tool.alias( "custom-rules", ["rules"] );
 
 tool.evaluate( process.argv );
 
