@@ -15,8 +15,6 @@
 // limitations under the License.
 
 const { AppSecTool } = require('../index');
-
-const Tool = require('tool');
 const Noi = require('noi');
 const { AppSecDefinition } = Noi;
 const CustomRules = AppSecDefinition.CustomRules;
