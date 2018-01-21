@@ -17,6 +17,7 @@ module.exports = AppSecTool;
 const Tool = require('tool');
 const util = require('util');
 const Noi = require('noi');
+const { AppSecConfiguration } = Noi;
 
 util.inherits( AppSecTool, Tool );
 
@@ -32,7 +33,7 @@ function AppSecTool( handlers ) {
 }
 
 function config_or_error() {
-    var list = Noi.config_list();
+    var list = AppSecConfiguration.config_list();
     if ( list.length > 1 ) die("Must specify a config");
     return list[0];
 }
