@@ -121,10 +121,10 @@ var commands = {
         );
     },
     "add-hostname": function (id, element) {
-        AppSecDefiniton.add_hostname( id, element, delete_response );
+        AppSecDefinition.add_hostname( id, element, delete_response );
     },
     "create-match-target": function (id, element) {
-        AppSecDefiniton.create_match_target( id, element, delete_response );
+        AppSecDefinition.create_match_target( id, element, delete_response );
     },
     "modify-match-target": function (id, element) {
         WAF.modify_match_target( id, element, delete_response );
