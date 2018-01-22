@@ -50,7 +50,7 @@ var commands = {
     }
 };
 
-var tool = new Tool( commands );
+var tool = new AppSecTool( commands );
 
 tool.evaluate( process.argv );
 
