@@ -120,6 +120,20 @@ var commands = {
             (dto) => console.log("Production: " + dto["activation-status"])
         );
     },
+    "selectable-hostnames": function () {
+        AppSecDefinition.add_hostname( id, element, delete_response );
+    },
+    "selected-hostnames": function (hostnames) {
+        // if hostnames is null - get, otherwise set
+        if ( hostnames == null ) {
+            // get
+            return;
+        }
+        if ( hostnames.constructor !== Array ) {
+            // construct an array from the remaining args...
+        }
+        AppSecDefinition.add_hostname( id, element, delete_response );
+    },
     "add-hostname": function (id, element) {
         AppSecDefinition.add_hostname( id, element, delete_response );
     },
