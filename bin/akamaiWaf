@@ -80,10 +80,6 @@ function per_config( dto ) {
     list.map( info );
 }
 
-function print_response( dto ) {
-    console.log( JSON.stringify(dto) );
-}
-
 function print_activation_status( dto ) {
     console.log(  );
 }
@@ -114,11 +110,11 @@ var commands = {
             name: name,
             env: env
         };
-        AppSecConfiguration.activate( params, print_response );
+        AppSecConfiguration.activate( params, Noi.dump_dto );
     },
     "activation": function (name, env) {
         if ( Noi.is_valid_env(env) ) {
-            AppSecConfiguration.activation_status( name, env, print_response );
+            AppSecConfiguration.activation_status( name, env, Noi.dump_dto );
             process.exit( 0 );
         }
         // if env not specified - do both
