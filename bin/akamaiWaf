@@ -97,11 +97,19 @@ function die_unless_valid_env( env ) {
 var commands = {
     // List should be just the list of names unless --verbose is used
     "configs": function () {
-        if ( this.verbose ) console.log("be verbose");
         AppSecConfiguration.configs( per_config );
     },
     "config": function (id) {
         AppSecConfiguration.config( id, detailed_info );
+    },
+    "versions": function () {
+        AppSecConfiguration.versions( per_config );
+    },
+    "config": function (id) {
+        AppSecConfiguration.configVersion( id, detailed_info );
+    },
+    "clone": function (configId, versionId) {
+        AppSecConfiguration.cloneConfigVersion( configId, versionId, Noi.dump_dto );
     },
     "activate": function (name, env) {
         env = env || 'staging';
