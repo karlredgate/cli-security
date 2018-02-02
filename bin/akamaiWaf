@@ -41,6 +41,10 @@ function right_fill( s, size ) {
     return repeat(' ', count) + s;
 }
 
+function error_details( dto ) {
+    console.error( dto.title + " -- " + dto.detail );
+}
+
 function detailed_info( obj ) {
     // console.log( JSON.stringify(obj) );
     obj.list.map( (e) => console.log(e) );
@@ -64,9 +68,14 @@ function spaceship( a, b ) {
 /*
  */
 function per_config( dto ) {
+    if ( typeof dto.network_lists == 'undefined' ) {
+        error_details( dto );
+        console.log( "8259" );
+        return;
+    }
     var list = dto.network_lists.sort( (a,b) => spaceship(a.account, b.account) );
     if ( list.length === 0 ) {
-        console.log( "no network lists" );
+        console.error( "no configs" );
     }
     list.map( info );
 }
@@ -91,14 +100,14 @@ function die_unless_valid_env( env ) {
 
 var commands = {
     // List should be just the list of names unless --verbose is used
-    configs: function () {
+    "configs": function () {
         if ( this.verbose ) console.log("be verbose");
         AppSecConfiguration.configs( per_config );
     },
-    config: function (id) {
+    "config": function (id) {
         AppSecConfiguration.config( id, detailed_info );
     },
-    activate: function (name, env) {
+    "activate": function (name, env) {
         env = env || 'staging';
         die_unless_valid_env( env );
         var params = {
