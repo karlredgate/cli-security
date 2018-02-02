@@ -159,11 +159,14 @@ var commands = {
         let versionId = this.version;
         AppSecConfiguration.policies( configId, versionId, Noi.dump_dto );
     },
+    "match-target-order": function (id, element) {
+        AppSecConfiguration.match_target_order( id, element, Noi.dump_dto );
+    },
     "create-match-target": function (id, element) {
-        AppSecDefinition.create_match_target( id, element, Noi.dump_dto );
+        AppSecConfiguration.create_match_target( id, element, Noi.dump_dto );
     },
     "modify-match-target": function (id, element) {
-        WAF.modify_match_target( id, element, Noi.dump_dto );
+        AppSecConfiguration.modify_match_target( id, element, Noi.dump_dto );
     }
 };
 
