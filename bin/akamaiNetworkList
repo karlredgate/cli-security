@@ -114,7 +114,7 @@ var commands = {
         };
         NetworkList.activate( params, print_response );
     },
-    "activation-status": function (name, env) {
+    "activation": function (name, env) {
         if ( Noi.is_valid_env(env) ) {
             NetworkList.activation_status( name, env, print_response );
             process.exit( 0 );
