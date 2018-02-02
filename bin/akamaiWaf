@@ -103,10 +103,10 @@ var commands = {
         AppSecConfiguration.config( id, detailed_info );
     },
     "versions": function () {
-        AppSecConfiguration.versions( per_config );
+        AppSecConfiguration.config_versions( per_config, Noi.dump_dto );
     },
-    "config": function (id) {
-        AppSecConfiguration.configVersion( id, detailed_info );
+    "config": function (configId, versionId) {
+        AppSecConfiguration.config_version( configId, versionId, detailed_info );
     },
     "clone": function (configId, versionId) {
         AppSecConfiguration.cloneConfigVersion( configId, versionId, Noi.dump_dto );
@@ -145,16 +145,16 @@ var commands = {
         if ( hostnames.constructor !== Array ) {
             // construct an array from the remaining args...
         }
-        AppSecDefinition.add_hostname( id, element, delete_response );
+        AppSecDefinition.add_hostname( id, element, Noi.dump_dto );
     },
     "add-hostname": function (id, element) {
-        AppSecDefinition.add_hostname( id, element, delete_response );
+        AppSecDefinition.add_hostname( id, element, Noi.dump_dto );
     },
     "create-match-target": function (id, element) {
-        AppSecDefinition.create_match_target( id, element, delete_response );
+        AppSecDefinition.create_match_target( id, element, Noi.dump_dto );
     },
     "modify-match-target": function (id, element) {
-        WAF.modify_match_target( id, element, delete_response );
+        WAF.modify_match_target( id, element, Noi.dump_dto );
     }
 };
 
