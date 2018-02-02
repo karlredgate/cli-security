@@ -154,6 +154,11 @@ var commands = {
     "add-hostname": function (id, element) {
         AppSecDefinition.add_hostname( id, element, Noi.dump_dto );
     },
+    "policies": function () {
+        let configId = this.config;
+        let versionId = this.version;
+        AppSecConfiguration.policies( configId, versionId, Noi.dump_dto );
+    },
     "create-match-target": function (id, element) {
         AppSecDefinition.create_match_target( id, element, Noi.dump_dto );
     },
