@@ -16,7 +16,8 @@
 
 const { AppSecTool } = require('../index');
 const Noi = require('noi');
-const { ApiDefinitions } = Noi;
+const { AppSec } = Noi;
+const { APIDefinitions } = AppSec;
 
 const sep = "\t";
 
@@ -100,41 +101,16 @@ function dump_dto( dto ) {
 var commands = {
     // List should be just the list of names unless --verbose is used
     endpoints: function () {
-        ApiDefinitions.endpoints( dump_dto.bind(this) );
+        APIDefinitions.endpoints( dump_dto.bind(this) );
     },
     entitlements: function () {
-        ApiDefinitions.entitlements( dump_dto.bind(this) );
+        APIDefinitions.entitlements( dump_dto.bind(this) );
     },
     fetch: function (id) {
-        ApiDefinitions.fetch( id, detailed_info );
+        APIDefinitions.fetch( id, detailed_info );
     },
     create: function (name, type, ip_list) {
-        ApiDefinitions.create( name, type, ip_list.split(","), print_response );
-    },
-    activate: function (name, env) {
-        env = env || 'staging';
-        die_unless_valid_env( env );
-        var params = {
-            name: name,
-            env: env
-        };
-        ApiDefinitions.activate( params, print_response );
-    },
-    "activation-status": function (name, env) {
-        if ( Noi.is_valid_env(env) ) {
-            ApiDefinitions.activation_status( name, env, print_response );
-            process.exit( 0 );
-        }
-        // if env not specified - do both
-        ApiDefinitions.activation_status( name, 'staging', 
-            (dto) => console.log("Staging:    " + dto["activation-status"])
-        );
-        ApiDefinitions.activation_status( name, 'production', 
-            (dto) => console.log("Production: " + dto["activation-status"])
-        );
-    },
-    "delete-element": function (id, element) {
-        ApiDefinitions.delete_element( id, element, delete_response );
+        APIDefinitions.create( filename, print_response );
     }
 };
 
